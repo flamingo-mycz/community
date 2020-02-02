@@ -18,6 +18,7 @@ ctrl + alt + N -> 将变量合并到上下文
 [callbackUrl](http://localhost:8080/callback)
 
 ## h2
+```sql
 CREATE TABLE user
 (
     id int AUTO_INCREMENT PRIMARY KEY,
@@ -27,3 +28,4 @@ CREATE TABLE user
     gmt_create bigint,
     gmt_modified bigint
 );
+```
