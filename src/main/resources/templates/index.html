@@ -1,49 +1,73 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>社区</title>
+    <title>社区-首页</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
+    <!--引入jQuery-->
+    <script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <!--引入bootstrap资源文件-->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <script src="static/js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+    <script src="js/bootstrap.min.js" type="application/javascript"></script>
     <script src="js/npm.js" type="application/javascript"></script>
+    <!--引入自定义的样式-->
+    <link rel="stylesheet" href="css/community.css"/>
 </head>
 <body>
 
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">社区</span>
-                </button>
-                <a class="navbar-brand" href="#">社区</a>
+    <!--导航栏-->
+    <div th:insert="~{navigation :: nav}"></div>
+
+    <!--列表栏-->
+    <div class="container-fluid main">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span> 发现</h2>
+                <hr/>
+
+                <!--列表-->
+                <div class="media" th:each="question : ${pagination.questions}">
+                    <div class="media-left media-middle">
+                        <a href="#">
+                            <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" width="48px" height="48px">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading" th:text="${question.title}"></h4>
+                        <span class="list-text-desc">
+                            <span th:text="${question.commentCount}"></span>个回复
+                            ·<span th:text="${question.viewCount}"></span>次浏览
+                            ·<span th:text="${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
+                        </span>
+                    </div>
+                </div>
+                <!--分页-->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li>
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="page : ${pagination.pages}" th:class="${pagination.page == page} ? 'active' : ''">
+                            <a th:href="@{/(page=${page})}" th:text="${page}" ></a>
+                        </li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="搜索问题">
-                    </div>
-                    <button type="submit" class="btn btn-default">搜索</button>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown" th:if="${session.user != null}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                           role="button" aria-haspopup="true" aria-expanded="false" th:text="${session.user.getName()}"><span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">消息中心</a></li>
-                            <li><a href="#">个人资料</a></li>
-                            <li><a href="#">退出登录</a></li>
-                        </ul>
-                    </li>
-                    <li th:if="${session.user == null}">
-                        <a href="https://github.com/login/oauth/authorize?client_id=60b9e232c55203724978&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a>
-                    </li>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <ul>
+                    <h3>最新</h3>
                 </ul>
             </div>
         </div>
-    </nav>
+    </div>
 </body>
 </html>

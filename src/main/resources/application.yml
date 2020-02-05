@@ -1,0 +1,29 @@
+# tomcat端口
+server:
+  port: 8080
+
+# github的用户信息
+github:
+  client:
+    id: 60b9e232c55203724978
+    secret: eabf577701f1b3e373e7b289aeb32915278887ce
+  redirect:
+    uri: http://localhost:8080/callback
+
+# spring的数据源
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:E:/database/h2
+    username: root
+    password: 123456
+
+# 开启mybatis返回数据类型中划线到驼峰规则的自动转换
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+# 打印mybatis执行的sql
+logging:
+  level:
+    cn.mycz.community.mapper: debug

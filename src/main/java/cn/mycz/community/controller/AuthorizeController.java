@@ -4,7 +4,7 @@ import cn.mycz.community.dto.AccessTokenDto;
 import cn.mycz.community.dto.GithubUser;
 import cn.mycz.community.mapper.UserMapper;
 import cn.mycz.community.provider.GithubProvider;
-import cn.mycz.pojo.User;
+import cn.mycz.community.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -55,15 +55,27 @@ public class AuthorizeController {
             user.setName(githubUser.getName());
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setAccountId(String.valueOf(githubUser.getId()));
+            String accountId = String.valueOf(githubUser.getId());
+            user.setAccountId(accountId);
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(System.currentTimeMillis());
-            userMapper.insert(user);
+            user.setAvatarUrl(githubUser.getAvatarUrl());
+            if (hasThisUserInDatabase(user.getAccountId())) {
+                userMapper.resetToken(accountId, token);
+            } else {
+                userMapper.insert(user);
+            }
             response.addCookie(new Cookie("token", token));
             return "redirect:/";
         } else {
             //登录失败
             return "redirect:/";
         }
+    }
+
+
+    private boolean hasThisUserInDatabase(String accountId) {
+        User user = userMapper.findUserByAccountId(accountId);
+        return user != null;
     }
 }
