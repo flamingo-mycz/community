@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!--引入jQuery-->
-    <script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <!--引入bootstrap资源文件-->
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
@@ -34,13 +34,15 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <a th:href="@{'/question/' + ${question.id}} ">
+                        <h4 class="media-heading" th:text="${question.title}"></h4>
+                    </a>
                     <span th:text="${question.description}"></span> <br/>
                     <span class="list-text-desc">
-                            <span th:text="${question.commentCount}"></span>个回复
-                            ·<span th:text="${question.viewCount}"></span>次浏览
-                            ·<span th:text="${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
-                        </span>
+                        <span th:text="${question.commentCount}"></span>个回复
+                        ·<span th:text="${question.viewCount}"></span>次浏览
+                        ·<span th:text="${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </span>
                 </div>
             </div>
             <!--分页-->

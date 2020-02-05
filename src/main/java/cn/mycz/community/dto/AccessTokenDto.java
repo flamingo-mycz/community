@@ -1,5 +1,6 @@
 package cn.mycz.community.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * @date 2020/1/31
  */
 @Data
+@AllArgsConstructor
 public class AccessTokenDto {
 
     private String client_id;

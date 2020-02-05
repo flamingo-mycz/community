@@ -5,14 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!--引入jQuery-->
-    <script src="js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <!--引入bootstrap资源文件-->
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
-    <script src="js/bootstrap.min.js" type="application/javascript"></script>
-    <script src="js/npm.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/npm.js" type="application/javascript"></script>
     <!--引入自定义的样式-->
-    <link rel="stylesheet" href="css/community.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
 </head>
 <body>
 
@@ -30,16 +30,20 @@
                 <div class="media" th:each="question : ${pagination.questions}">
                     <div class="media-left media-middle">
                         <a href="#">
-                            <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" width="48px" height="48px">
+                            <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" width="54px" height="54px">
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" th:text="${question.title}"></h4>
+                        <h4 class="media-heading">
+                            <a th:href="@{'question/' + ${question.id}}" th:text="${question.title}"></a>
+                        </h4>
+                        <span th:text="${question.description}"></span><br/>
                         <span class="list-text-desc">
                             <span th:text="${question.commentCount}"></span>个回复
                             ·<span th:text="${question.viewCount}"></span>次浏览
                             ·<span th:text="${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
                         </span>
+
                     </div>
                 </div>
                 <!--分页-->

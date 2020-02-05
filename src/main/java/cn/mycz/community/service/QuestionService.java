@@ -34,7 +34,7 @@ public class QuestionService {
         List<QuestionDto> questionDtos = new ArrayList<>();
         PaginationDto paginationDto = new PaginationDto();
         for (Question question : questions) {
-            User user = userMapper.findUserByAccountId(question.getCreator());
+            User user = userMapper.findByAccountId(question.getCreator());
             QuestionDto questionDto = new QuestionDto();
             BeanUtils.copyProperties(question, questionDto);
             questionDto.setUser(user);
@@ -47,14 +47,14 @@ public class QuestionService {
         return paginationDto;
     }
 
-    public PaginationDto listByUser(String accountId, Integer page, Integer size) {
+    public PaginationDto listByUser(Integer accountId, Integer page, Integer size) {
         Integer offset = size * (page - 1);
 
         List<Question> questions = questionMapper.listByUser(accountId, offset, size);
         List<QuestionDto> questionDtos = new ArrayList<>();
         PaginationDto paginationDto = new PaginationDto();
         for (Question question : questions) {
-            User user = userMapper.findUserByAccountId(question.getCreator());
+            User user = userMapper.findByAccountId(question.getCreator());
             QuestionDto questionDto = new QuestionDto();
             BeanUtils.copyProperties(question, questionDto);
             questionDto.setUser(user);
@@ -66,4 +66,26 @@ public class QuestionService {
 
         return paginationDto;
     }
+
+    public QuestionDto getQuestionDtoById(Integer id) {
+        Question question = questionMapper.findById(id);
+        QuestionDto questionDto = new QuestionDto();
+        BeanUtils.copyProperties(question, questionDto);
+        User user = userMapper.findByAccountId(question.getCreator());
+        questionDto.setUser(user);
+        return questionDto;
+    }
+
+    public void create(Question question, Integer creator) {
+        question.setCreator(creator);
+        question.setGmtCreate(System.currentTimeMillis());
+        question.setGmtModified(System.currentTimeMillis());
+        questionMapper.create(question);
+    }
+
+    public void update(Question question) {
+        question.setGmtModified(System.currentTimeMillis());
+        questionMapper.update(question);
+    }
+
 }

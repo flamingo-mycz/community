@@ -5,6 +5,7 @@ import cn.mycz.community.dto.GithubUser;
 import cn.mycz.community.mapper.UserMapper;
 import cn.mycz.community.provider.GithubProvider;
 import cn.mycz.community.pojo.User;
+import cn.mycz.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -28,6 +30,9 @@ public class AuthorizeController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserService userService;
+
     @Value("${github.client.id}")
     private String clientId;
 
@@ -37,31 +42,30 @@ public class AuthorizeController {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
+    /**
+     * github回调的方法，通过此方法进行用户登录
+     * @param code
+     * @param state
+     * @param request
+     * @param response
+     * @return
+     */
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
+                           HttpServletRequest request,
                            HttpServletResponse response) {
-        AccessTokenDto accessTokenDto = new AccessTokenDto();
-        accessTokenDto.setCode(code);
-        accessTokenDto.setRedirect_uri(redirectUri);
-        accessTokenDto.setState(state);
-        accessTokenDto.setClient_id(clientId);
-        accessTokenDto.setClient_secret(clientSecret);
+        AccessTokenDto accessTokenDto = new AccessTokenDto(clientId, clientSecret,code,redirectUri,state);
         String accessToken = githubProvider.getAccessToken(accessTokenDto);
         GithubUser githubUser = githubProvider.getUser(accessToken);
         if (githubUser != null) {
-            //登录成功，写cookie
-            User user = new User();
-            user.setName(githubUser.getName());
+            //登录成功，写cookie和session
+            Integer accountId =  githubUser.getId();
             String token = UUID.randomUUID().toString();
-            user.setToken(token);
-            String accountId = String.valueOf(githubUser.getId());
-            user.setAccountId(accountId);
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(System.currentTimeMillis());
-            user.setAvatarUrl(githubUser.getAvatarUrl());
-            if (hasThisUserInDatabase(user.getAccountId())) {
-                userMapper.resetToken(accountId, token);
+            User user = githubUser.convertToUser(accountId, token);
+            request.getSession().setAttribute("user", user);
+            if (userService.hasUser(user.getAccountId())) {
+                userService.update(user);
             } else {
                 userMapper.insert(user);
             }
@@ -73,9 +77,21 @@ public class AuthorizeController {
         }
     }
 
-
-    private boolean hasThisUserInDatabase(String accountId) {
-        User user = userMapper.findUserByAccountId(accountId);
-        return user != null;
+    /**
+     * 用户退出
+     * @param request
+     * @param response
+     * @return
+     */
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        //删除session
+        request.getSession().removeAttribute("user");
+        //删除cookie
+        Cookie cookie = new Cookie("token", null);//删除前必须要new 一个value为空；
+        cookie.setPath("/");
+        cookie.setMaxAge(0);//生命周期设置为0
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 }

@@ -19,6 +19,12 @@ public class PaginationDto {
     private Integer page;
     private List<Integer> pages = new ArrayList<>();
 
+    /**
+     * 分页方法
+     * @param totalCount
+     * @param page
+     * @param size
+     */
     public void setPagination(Integer totalCount, Integer page, Integer size) {
         pages.clear();
 

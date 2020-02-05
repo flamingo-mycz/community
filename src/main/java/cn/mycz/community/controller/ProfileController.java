@@ -22,6 +22,15 @@ public class ProfileController {
     @Autowired
     private QuestionService questionService;
 
+    /**
+     * 根据navigation弹出的按钮切换页面，分别展示我的问题与最新登录
+     * @param action
+     * @param model
+     * @param request
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
                           Model model,

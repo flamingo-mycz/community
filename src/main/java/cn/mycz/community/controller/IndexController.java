@@ -18,9 +18,15 @@ public class IndexController {
     @Autowired
     private QuestionService questionService;
 
-    //ctrl + P -> 查看参数
+    /**
+     * 显示列表
+     * @param model
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping("/")
-    public String hello(Model model,
+    public String show(Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "5") Integer size                        ) {
 
