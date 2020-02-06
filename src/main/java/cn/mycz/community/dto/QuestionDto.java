@@ -3,6 +3,7 @@ package cn.mycz.community.dto;
 import cn.mycz.community.pojo.Question;
 import cn.mycz.community.pojo.User;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 /**
  * @author 木已成舟
@@ -13,4 +14,10 @@ public class QuestionDto extends Question {
 
     private User user;
 
+    public QuestionDto() {}
+
+    public QuestionDto(Question question, User user) {
+        BeanUtils.copyProperties(question, this);
+        setUser(user);
+    }
 }

@@ -22,6 +22,8 @@ spring:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+  type-aliases-package: cn.mycz.community.
+  mapper-locations: classpath:mapper/*.xml
 
 # 打印mybatis执行的sql
 logging:

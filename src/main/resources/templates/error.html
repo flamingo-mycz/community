@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>社区-首页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <!--引入jQuery-->
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <!--引入bootstrap资源文件-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/npm.js" type="application/javascript"></script>
+    <!--引入自定义的样式-->
+    <link rel="stylesheet" href="/css/community.css"/>
+</head>
+<body>
+
+    <!--导航栏-->
+    <div th:insert="~{navigation :: nav}"></div>
+
+    <!--内容-->
+    <div class="jumbotron">
+        <h1>出错啦！！！</h1>
+        <p th:text="${message}">服务太热了，要不然稍等下再来试试~~</p>
+        <p><a class="btn btn-primary btn-lg" href="/" role="button">返回主页</a></p>
+    </div>
+
+</body>
+</html>

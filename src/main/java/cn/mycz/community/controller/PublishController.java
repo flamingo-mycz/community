@@ -35,7 +35,7 @@ public class PublishController {
      */
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
-        Question question = questionMapper.findById(id);
+        Question question = questionMapper.selectByPrimaryKey(id);
         model.addAttribute("question", question);
         model.addAttribute("id", id);
         return "publish";
@@ -83,8 +83,13 @@ public class PublishController {
             //创建question
             questionService.create(question, user.getAccountId());
         } else {
+            Question old = questionService.findById(question.getId());
+            old.setGmtModified(System.currentTimeMillis());
+            old.setTitle(question.getTitle());
+            old.setDescription(question.getDescription());
+            old.setTag(question.getTag());
             //修改question
-            questionService.update(question);
+            questionService.update(old);
         }
 
         return "redirect:/";

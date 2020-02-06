@@ -30,23 +30,10 @@ CREATE TABLE user
 );
 ```
 
-## flyway
 ```bash
 mvn flyway:migrate
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```
 
-server:
-  port=8080
-
-github.client.id=60b9e232c55203724978
-github.client.secret=eabf577701f1b3e373e7b289aeb32915278887ce
-github.redirect.uri=http://localhost:8080/callback
-
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.url=jdbc:h2:E:/database/h2
-spring.datasource.username=root
-spring.datasource.password=123456
-
-mybatis.configuration.map-underscore-to-camel-case=true
 
 

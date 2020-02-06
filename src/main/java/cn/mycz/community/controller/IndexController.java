@@ -1,7 +1,7 @@
 package cn.mycz.community.controller;
 
 import cn.mycz.community.dto.PaginationDto;
-import cn.mycz.community.service.QuestionService;
+import cn.mycz.community.service.PaginationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IndexController {
 
     @Autowired
-    private QuestionService questionService;
+    private PaginationService paginationService;
 
     /**
      * 显示列表
@@ -30,7 +30,7 @@ public class IndexController {
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "5") Integer size                        ) {
 
-        PaginationDto pagination = questionService.list(page, size);
+        PaginationDto pagination = paginationService.list(page, size, null);
         model.addAttribute("pagination", pagination);
 
         return "index";

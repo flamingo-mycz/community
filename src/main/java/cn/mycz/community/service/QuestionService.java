@@ -1,17 +1,14 @@
 package cn.mycz.community.service;
 
-import cn.mycz.community.dto.PaginationDto;
 import cn.mycz.community.dto.QuestionDto;
+import cn.mycz.community.exception.CustomizeErrorCode;
+import cn.mycz.community.exception.CustomizeException;
 import cn.mycz.community.mapper.QuestionMapper;
-import cn.mycz.community.mapper.UserMapper;
 import cn.mycz.community.pojo.Question;
+import cn.mycz.community.pojo.QuestionExample;
 import cn.mycz.community.pojo.User;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author 木已成舟
@@ -21,71 +18,84 @@ import java.util.List;
 public class QuestionService {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Autowired
     private QuestionMapper questionMapper;
 
-    public PaginationDto list(Integer page, Integer size) {
-
-        Integer offset = size * (page - 1);
-
-        List<Question> questions = questionMapper.list(offset, size);
-        List<QuestionDto> questionDtos = new ArrayList<>();
-        PaginationDto paginationDto = new PaginationDto();
-        for (Question question : questions) {
-            User user = userMapper.findByAccountId(question.getCreator());
-            QuestionDto questionDto = new QuestionDto();
-            BeanUtils.copyProperties(question, questionDto);
-            questionDto.setUser(user);
-            questionDtos.add(questionDto);
-        }
-        paginationDto.setQuestions(questionDtos);
-        Integer totalCount = questionMapper.count();
-        paginationDto.setPagination(totalCount, page, size);
-
-        return paginationDto;
+    /**
+     * 返回数据库的总行数
+     * @return
+     */
+    public Integer totalCount() {
+        return  (int) questionMapper.countByExample(new QuestionExample());
     }
 
-    public PaginationDto listByUser(Integer accountId, Integer page, Integer size) {
-        Integer offset = size * (page - 1);
-
-        List<Question> questions = questionMapper.listByUser(accountId, offset, size);
-        List<QuestionDto> questionDtos = new ArrayList<>();
-        PaginationDto paginationDto = new PaginationDto();
-        for (Question question : questions) {
-            User user = userMapper.findByAccountId(question.getCreator());
-            QuestionDto questionDto = new QuestionDto();
-            BeanUtils.copyProperties(question, questionDto);
-            questionDto.setUser(user);
-            questionDtos.add(questionDto);
-        }
-        paginationDto.setQuestions(questionDtos);
-        Integer totalCount = questionMapper.countByUser(accountId);
-        paginationDto.setPagination(totalCount, page, size);
-
-        return paginationDto;
+    /**
+     * 根据Creator计算个数
+     * @param accountId
+     * @return
+     */
+    public Integer countByCreator(Integer accountId) {
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andCreatorEqualTo(accountId);
+        return (int) questionMapper.countByExample(questionExample);
     }
 
-    public QuestionDto getQuestionDtoById(Integer id) {
-        Question question = questionMapper.findById(id);
-        QuestionDto questionDto = new QuestionDto();
-        BeanUtils.copyProperties(question, questionDto);
-        User user = userMapper.findByAccountId(question.getCreator());
-        questionDto.setUser(user);
-        return questionDto;
-    }
-
+    /**
+     * 创建一个Question
+     * @param question
+     * @param creator
+     */
     public void create(Question question, Integer creator) {
+
+        if (creator == null) {
+            throw new NullPointerException();
+        }
+
         question.setCreator(creator);
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(System.currentTimeMillis());
-        questionMapper.create(question);
+        questionMapper.insertSelective(question);
     }
 
+    /**
+     * 更新Question
+     * @param question
+     */
     public void update(Question question) {
         question.setGmtModified(System.currentTimeMillis());
-        questionMapper.update(question);
+        if(question.getCreator() == null)
+            throw new NullPointerException();
+        int updated = questionMapper.updateByPrimaryKeySelective(question);
+        if (updated != 1) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
+    }
+
+    /**
+     * 根据Question的id获取Question的详情（QuestionDto）
+     * @param id
+     * @return
+     */
+    public QuestionDto getQuestionDtoById(Integer id) {
+        Question question = findById(id);
+        User user = userService.findByAccountId(question.getCreator());
+        QuestionDto questionDto = new QuestionDto(question, user);
+        return questionDto;
+    }
+
+    /**
+     * 根据Id查询Question
+     * @param id
+     * @return
+     */
+    public Question findById(Integer id) {
+        Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
+        return question;
     }
 
 }
