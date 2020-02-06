@@ -3,6 +3,7 @@ package cn.mycz.community.service;
 import cn.mycz.community.dto.QuestionDto;
 import cn.mycz.community.exception.CustomizeErrorCode;
 import cn.mycz.community.exception.CustomizeException;
+import cn.mycz.community.mapper.QuestionExtMapper;
 import cn.mycz.community.mapper.QuestionMapper;
 import cn.mycz.community.pojo.Question;
 import cn.mycz.community.pojo.QuestionExample;
@@ -22,6 +23,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     /**
      * 返回数据库的总行数
@@ -98,4 +102,14 @@ public class QuestionService {
         return question;
     }
 
+    /**
+     * 增加阅读数
+     * @param id
+     */
+    public void increaseView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.increaseView(question);
+    }
 }
