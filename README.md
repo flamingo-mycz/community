@@ -6,6 +6,7 @@
 [Git OAuth](https://developer.github.com/apps/building-oauth-apps/)  
 
 ## 工具
+Postman
 
 ##快捷键
 ctrl + shift + F12 -> 窗口最大化  

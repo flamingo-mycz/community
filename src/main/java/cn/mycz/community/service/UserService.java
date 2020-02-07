@@ -33,7 +33,9 @@ public class UserService {
      */
     public void update(User user) {
         user.setGmtModified(System.currentTimeMillis());
-        userMapper.updateByPrimaryKey(user);
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andAccountIdEqualTo(user.getId());
+        userMapper.updateByExample(user, userExample);
     }
 
     /**
@@ -45,7 +47,22 @@ public class UserService {
         UserExample example = new UserExample();
         example.createCriteria().andAccountIdEqualTo(accountId);
         List<User> users = userMapper.selectByExample(example);
-        if (users.size() > 0)
+        if (users.size() != 0)
+            return users.get(0);
+        else
+            return null;
+    }
+
+    /**
+     * 根据token查找用户
+     * @param token
+     * @return
+     */
+    public User findByToken(String token) {
+        UserExample example = new UserExample();
+        example.createCriteria().andTokenEqualTo(token);
+        List<User> users = userMapper.selectByExample(example);
+        if (users.size() != 0)
             return users.get(0);
         else
             return null;

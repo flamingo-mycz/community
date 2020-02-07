@@ -15,7 +15,14 @@
 
   <update id="increaseView" parameterType="cn.mycz.community.pojo.Question">
     update QUESTION set
-    VIEW_COUNT = #{viewCount} + VIEW_COUNT
+    VIEW_COUNT = #{viewCount, jdbcType=INTEGER} + VIEW_COUNT
     where id = #{id}
   </update>
+
+  <update id="increaseComment" parameterType="cn.mycz.community.pojo.Question">
+    update QUESTION set
+    COMMENT_COUNT = #{commentCount, jdbcType=INTEGER} + COMMENT_COUNT
+    where id = #{id}
+  </update>
+
 </mapper>

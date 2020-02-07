@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface QuestionExtMapper {
 
     int increaseView(Question record);
+
+    int increaseComment(Question record);
 }

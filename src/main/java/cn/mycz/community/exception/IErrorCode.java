@@ -6,4 +6,5 @@ package cn.mycz.community.exception;
  */
 public interface IErrorCode {
     String getMessage();
+    Integer getCode();
 }

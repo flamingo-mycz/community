@@ -57,6 +57,9 @@ public class QuestionService {
             throw new NullPointerException();
         }
 
+        question.setViewCount(0);
+        question.setCommentCount(0);
+        question.setLikeCount(0);
         question.setCreator(creator);
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(System.currentTimeMillis());
@@ -106,10 +109,19 @@ public class QuestionService {
      * 增加阅读数
      * @param id
      */
-    public void increaseView(Integer id) {
+    public void increaseViewById(Integer id) {
         Question question = new Question();
         question.setId(id);
         question.setViewCount(1);
+        questionExtMapper.increaseView(question);
+    }
+
+    /**
+     * 增加阅读数
+     * @param question
+     */
+    public void increaseComment(Question question) {
+        question.setCommentCount(1);
         questionExtMapper.increaseView(question);
     }
 }
