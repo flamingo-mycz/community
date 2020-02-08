@@ -10,7 +10,8 @@ public enum CustomizeErrorCode implements IErrorCode {
     TARGET_PARENT_NOT_FOUND(202, "未选中任何问题或评论进行回复"),
     USER_NO_LOGIN(203, "用户未登录，请登录后重试"),
     SYSTEM_ERROR(204, "服务冒烟了。。。"),
-    COMMENT_NOT_FOUND(205, "你找的评论不存在了")
+    COMMENT_NOT_FOUND(205, "你找的评论不存在了"),
+    CONTENT_IS_EMPTY(206, "回复内容不能为空"),
     ;
 
     private Integer code;

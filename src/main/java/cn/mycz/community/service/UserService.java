@@ -34,7 +34,7 @@ public class UserService {
     public void update(User user) {
         user.setGmtModified(System.currentTimeMillis());
         UserExample userExample = new UserExample();
-        userExample.createCriteria().andAccountIdEqualTo(user.getId());
+        userExample.createCriteria().andAccountIdEqualTo(user.getAccountId());
         userMapper.updateByExample(user, userExample);
     }
 
@@ -51,6 +51,18 @@ public class UserService {
             return users.get(0);
         else
             return null;
+    }
+
+    /**
+     * 根据accountId列表查询多个User
+     * @param
+     * @return
+     */
+    public List<User> findByAccountIds(List<Integer> userAccountIds) {
+        UserExample example = new UserExample();
+        example.createCriteria().andAccountIdIn(userAccountIds);
+        List<User> users = userMapper.selectByExample(example);
+        return users;
     }
 
     /**

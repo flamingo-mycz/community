@@ -1,26 +1,23 @@
 package cn.mycz.community.dto;
 
-import cn.mycz.community.pojo.Comment;
+import cn.mycz.community.pojo.User;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
 
 /**
  * @author 木已成舟
- * @date 2020/2/7
+ * @date 2020/2/8
  */
 @Data
 public class CommentDto {
-    private Integer parentId;
-    private String content;
-    private Integer type;
 
-    public Comment build(Integer commentator) {
-        Comment comment = new Comment();
-        BeanUtils.copyProperties(this, comment);
-        comment.setGmtCreate(System.currentTimeMillis());
-        comment.setGmtModified(System.currentTimeMillis());
-        comment.setCommentator(commentator);
-        comment.setLikeCount(0);
-        return comment;
-    }
+    private Integer id;
+    private String content;
+    private Integer parentId;
+    private Integer type;
+    private Integer commentator;
+    private Long gmtCreate;
+    private Long gmtModified;
+    private Integer likeCount;
+
+    private User user;
 }

@@ -23,10 +23,47 @@ body {
 }
 
 .community-menu {
+    display: block;
     color: #999;
+    font-size: 13px;
+    margin-bottom: 15px;
 }
 
 .jumbotron {
-    margin: 50px;
-    margin-left: 100px;
+    margin: 50px 50px 50px 100px;
+}
+
+.comment-textarea {
+    margin: 10px 0;
+}
+
+.comment-button {
+    float: right;
+    margin-bottom: 15px
+}
+
+.comment-item {
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #999;
+}
+
+.comment-sp-line {
+    margin-top: 0px;
+}
+
+.menu {
+    color: #999;
+    margin-top: 5px;
+}
+
+.menu .icon {
+    margin-right: 6px;
+    font-size: 16px;
+    /*鼠标放上变手形状*/
+    cursor: pointer;
+}
+
+.menu .icon:hover {
+    color: #2aabd2;
 }

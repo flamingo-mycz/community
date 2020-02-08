@@ -1,6 +1,6 @@
 package cn.mycz.community.controller;
 
-import cn.mycz.community.dto.CommentDto;
+import cn.mycz.community.dto.CommentCreateDto;
 import cn.mycz.community.dto.ResultDto;
 import cn.mycz.community.exception.CustomizeErrorCode;
 import cn.mycz.community.pojo.Comment;
@@ -8,6 +8,7 @@ import cn.mycz.community.pojo.User;
 import cn.mycz.community.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +27,7 @@ public class CommentController {
 
     @PostMapping("/comment")
     @ResponseBody
-    public Object post(@RequestBody CommentDto commentDto, HttpServletRequest request) {
+    public Object post(@RequestBody CommentCreateDto commentCreateDto, HttpServletRequest request) {
 
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
@@ -34,7 +35,11 @@ public class CommentController {
             return ResultDto.errorOf(CustomizeErrorCode.USER_NO_LOGIN);
         }
 
-        Comment comment = commentDto.build(user.getAccountId());
+        if (commentCreateDto == null || StringUtils.isEmpty(commentCreateDto.getContent())) {
+            return ResultDto.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
+        }
+
+        Comment comment = commentCreateDto.build(user.getAccountId());
         commentService.insert(comment);
 
         return ResultDto.ok();
