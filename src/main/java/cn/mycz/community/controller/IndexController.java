@@ -30,7 +30,7 @@ public class IndexController {
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "5") Integer size                        ) {
 
-        PaginationDto pagination = paginationService.list(page, size, null);
+        PaginationDto pagination = paginationService.listQuestions(page, size, null);
         model.addAttribute("pagination", pagination);
 
         return "index";

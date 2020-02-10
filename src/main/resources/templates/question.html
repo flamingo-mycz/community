@@ -18,6 +18,13 @@
     <link rel="stylesheet" href="/css/community.css"/>
     <!--引入自定义的js-->
     <script src="/js/community.js" type="application/javascript"></script>
+    <!--引入支持markdown富文本的依赖-->
+    <link rel="stylesheet" href="/css/editormd.min.css">
+    <script src="/js/editormd.min.js"></script>
+    <link rel="stylesheet" href="/css/editormd.preview.min.css">
+    <link rel="stylesheet" href="/css/editormd.logo.min.css">
+    <script src="/js/lib/prettify.min.js"></script>
+    <script src="/js/lib/marked.min.js"></script>
 </head>
 <body>
 
@@ -38,7 +45,15 @@
                     阅读数：<span th:text="${question.viewCount}"></span>
                 </span>
                 <hr/>
-                <div th:text="${question.description}"></div>
+                <!--问题的内容-->
+                <div id="markdown-view">
+                    <textarea style="display: none" cols="30" rows="10" th:text="${question.description}"></textarea>
+                </div>
+                <script type="application/javascript">
+                    $(function () {
+                        editormd.markdownToHTML("markdown-view", {});
+                    });
+                </script>
                 <hr/>
                 <!--标签域-->
                 <span th:each="tag : ${question.tag.split(',')}">
@@ -144,7 +159,7 @@
             </div>
             <hr/>
             <!--微信号-->
-            <img src="/img/wechat.jpg" class="img-wechat img-thumbnail">
+            <img src="/images/wechat.jpg" class="img-wechat img-thumbnail">
             <div class="text-wechat">欢迎多多关注</div>
 
             <hr/>

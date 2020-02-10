@@ -8,6 +8,7 @@ import cn.mycz.community.mapper.QuestionMapper;
 import cn.mycz.community.pojo.Question;
 import cn.mycz.community.pojo.QuestionExample;
 import cn.mycz.community.pojo.User;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -150,4 +151,17 @@ public class QuestionService {
 
         return questionDtos;
     }
+
+    /**
+     * 问题的分页
+     * @param size
+     * @param offset
+     * @param questionExample
+     * @return
+     */
+    public List<Question> list(Integer size, Integer offset, QuestionExample questionExample) {
+        questionExample.setOrderByClause("gmt_create desc");
+        return questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+    }
+
 }

@@ -57,8 +57,6 @@
 
 
         <table tableName="user" domainObjectName="User">
-            <!-- 上面的属性都可以使用子标签形式表示 -->
-            <!-- 是否使用真实字段名，设置为false将自动驼峰转换 -->
             <property name="useActualColumnNames" value="false" />
         </table>
         <table tableName="question" domainObjectName="Question">
@@ -67,7 +65,9 @@
         <table tableName="comment" domainObjectName="Comment">
             <property name="useActualColumnNames" value="false" />
         </table>
-
+        <table tableName="notification" domainObjectName="Notification">
+            <property name="useActualColumnNames" value="false" />
+        </table>
 
     </context>
 </generatorConfiguration>

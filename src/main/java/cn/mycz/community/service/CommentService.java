@@ -2,13 +2,12 @@ package cn.mycz.community.service;
 
 import cn.mycz.community.dto.CommentDto;
 import cn.mycz.community.enums.CommentType;
+import cn.mycz.community.enums.NotificationStatusEnum;
+import cn.mycz.community.enums.NotificationTypeEnum;
 import cn.mycz.community.exception.CustomizeErrorCode;
 import cn.mycz.community.exception.CustomizeException;
 import cn.mycz.community.mapper.CommentMapper;
-import cn.mycz.community.pojo.Comment;
-import cn.mycz.community.pojo.CommentExample;
-import cn.mycz.community.pojo.Question;
-import cn.mycz.community.pojo.User;
+import cn.mycz.community.pojo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +35,9 @@ public class CommentService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Transactional
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId() <= 0) {
@@ -52,6 +54,10 @@ public class CommentService {
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
+
+            Notification notification = createNotification(comment, dbComment.getCommentator(), NotificationTypeEnum.REPLY_COMMENT);
+            notificationService.insert(notification);
+
         } else {
             //回复问题
             Integer parentId = comment.getParentId();
@@ -61,9 +67,31 @@ public class CommentService {
             }
             //增加评论数
             questionService.increaseComment(question);
+
+            //创建通知
+            Notification notification = createNotification(comment, question.getCreator(), NotificationTypeEnum.REPLY_QUESTION);
+            notificationService.insert(notification);
         }
 
         commentMapper.insert(comment);
+    }
+
+    /**
+     * 通知
+     * @param comment
+     * @param receiver
+     * @param notificationType
+     * @return
+     */
+    private Notification createNotification(Comment comment, Integer receiver, NotificationTypeEnum notificationType) {
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setType(notificationType.getType());
+        notification.setResourceId(comment.getParentId());
+        notification.setNotifier(comment.getCommentator());
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setReceiver(receiver);
+        return notification;
     }
 
     /**

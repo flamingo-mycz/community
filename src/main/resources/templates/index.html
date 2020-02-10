@@ -38,7 +38,7 @@
                 <hr/>
 
                 <!--列表-->
-                <div class="media" th:each="question : ${pagination.questions}">
+                <div class="media" th:each="question : ${pagination.list}">
                     <div class="media-left media-middle">
                         <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" width="60px" height="60px">
                     </div>

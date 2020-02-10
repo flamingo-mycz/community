@@ -2,6 +2,7 @@ package cn.mycz.community.controller;
 
 import cn.mycz.community.dto.PaginationDto;
 import cn.mycz.community.pojo.User;
+import cn.mycz.community.service.NotificationService;
 import cn.mycz.community.service.PaginationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,9 @@ public class ProfileController {
 
     @Autowired
     private PaginationService paginationService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     /**
      * 根据navigation弹出的按钮切换页面，分别展示我的问题与最新登录
@@ -47,13 +51,18 @@ public class ProfileController {
         if ("questions".equals(action)) {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
+
+            PaginationDto paginationDto = paginationService.listQuestions(page, size, user.getAccountId());
+            model.addAttribute("pagination", paginationDto);
         } else if ("replies".equals(action)) {
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
+
+            PaginationDto paginationDto = paginationService.listNotification(page, size, user.getAccountId());
+            model.addAttribute("pagination", paginationDto);
         }
 
-        PaginationDto paginationDto = paginationService.list(page, size, user.getAccountId());
-        model.addAttribute("pagination", paginationDto);
+
 
         return "profile";
     }
