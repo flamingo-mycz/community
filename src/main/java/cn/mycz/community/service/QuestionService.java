@@ -10,6 +10,11 @@ import cn.mycz.community.pojo.QuestionExample;
 import cn.mycz.community.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author 木已成舟
@@ -99,9 +104,6 @@ public class QuestionService {
      */
     public Question findById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
-        if (question == null) {
-            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
-        }
         return question;
     }
 
@@ -122,6 +124,30 @@ public class QuestionService {
      */
     public void increaseComment(Question question) {
         question.setCommentCount(1);
-        questionExtMapper.increaseView(question);
+        questionExtMapper.increaseComment(question);
+    }
+
+
+    /**
+     * 根据tag模糊搜索相关的问题
+     * @param questionDto
+     * @return
+     */
+    public List<QuestionDto> selectRelated(QuestionDto questionDto) {
+        String tag = questionDto.getTag();
+
+        if(StringUtils.isEmpty(tag)) {
+            return new ArrayList<>();
+        }
+
+        String tagRegex = tag.replaceAll(",", "|");
+        Question question = new Question();
+        question.setId(questionDto.getId());
+        question.setTag(tagRegex);
+
+        List<Question> questions = questionExtMapper.selectRelated(question);
+        List<QuestionDto> questionDtos = questions.stream().map(q -> new QuestionDto(q, userService.findByAccountId(q.getCreator()))).collect(Collectors.toList());
+
+        return questionDtos;
     }
 }

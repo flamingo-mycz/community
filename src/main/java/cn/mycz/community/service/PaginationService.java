@@ -47,7 +47,7 @@ public class PaginationService {
         } else {
             totalCount = questionService.totalCount();
         }
-
+        questionExample.setOrderByClause("gmt_create desc");
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
 
         List<QuestionDto> questionDtos = new ArrayList<>();

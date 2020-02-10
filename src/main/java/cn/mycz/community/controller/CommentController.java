@@ -1,7 +1,9 @@
 package cn.mycz.community.controller;
 
 import cn.mycz.community.dto.CommentCreateDto;
+import cn.mycz.community.dto.CommentDto;
 import cn.mycz.community.dto.ResultDto;
+import cn.mycz.community.enums.CommentType;
 import cn.mycz.community.exception.CustomizeErrorCode;
 import cn.mycz.community.pojo.Comment;
 import cn.mycz.community.pojo.User;
@@ -9,11 +11,10 @@ import cn.mycz.community.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author 木已成舟
@@ -43,5 +44,12 @@ public class CommentController {
         commentService.insert(comment);
 
         return ResultDto.ok();
+    }
+
+    @GetMapping("/comment/{id}")
+    @ResponseBody
+    public ResultDto comments(@PathVariable(name = "id") Integer id) {
+        List<CommentDto> comments = commentService.listComment(id, CommentType.COMMENT.getType());
+        return ResultDto.ok(comments);
     }
 }

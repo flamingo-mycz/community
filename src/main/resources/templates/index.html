@@ -40,16 +40,12 @@
                 <!--列表-->
                 <div class="media" th:each="question : ${pagination.questions}">
                     <div class="media-left media-middle">
-                        <a href="#">
-                            <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" width="60px" height="60px">
-                            <!--<img class="media-object img-rounded" th:src="${question.user.avatarUrl}" width="60px" height="60px">-->
-                        </a>
+                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" width="60px" height="60px">
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading">
                             <a th:href="@{'question/' + ${question.id}}" th:text="${question.title}"></a>
                         </h4>
-                        <span th:text="${question.description}"></span><br/>
                         <span class="list-text-desc">
                             <span th:text="${question.commentCount}"></span>个回复
                             ·<span th:text="${question.viewCount}"></span>次浏览

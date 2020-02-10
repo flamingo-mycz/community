@@ -48,20 +48,31 @@ public class CommentService {
 
         if (comment.getType() == CommentType.COMMENT.getType()) {
             //回复评论
-            Comment dbComment = findByParentId(comment.getParentId());
+            Comment dbComment = findById(comment.getParentId());
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
         } else {
             //回复问题
-            Question question = questionService.findById(comment.getParentId());
+            Integer parentId = comment.getParentId();
+            Question question = questionService.findById(parentId);
             if (question == null) {
-                throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
+            //增加评论数
             questionService.increaseComment(question);
         }
 
         commentMapper.insert(comment);
+    }
+
+    /**
+     * 根据id查找
+     * @param id
+     * @return
+     */
+    public Comment findById(Integer id) {
+        return commentMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -82,11 +93,12 @@ public class CommentService {
     /**
      * 根据QuestionId列出这个问题的回复
      * @param questionId
+     * @param type
      * @return
      */
-    public List<CommentDto> listComment(Integer questionId) {
+    public List<CommentDto> listComment(Integer questionId, int type) {
         CommentExample commentExample = new CommentExample();
-        commentExample.createCriteria().andParentIdEqualTo(questionId).andTypeEqualTo(CommentType.QUESTION.getType());
+        commentExample.createCriteria().andParentIdEqualTo(questionId).andTypeEqualTo(type);
         commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         if (comments.size() == 0)
