@@ -1,6 +1,6 @@
 # tomcat端口
 server:
-  port: 8080
+  port: 80
 
 # github的用户信息
 github:
@@ -8,13 +8,13 @@ github:
     id: 60b9e232c55203724978
     secret: eabf577701f1b3e373e7b289aeb32915278887ce
   redirect:
-    uri: http://localhost:8080/callback
+    uri: http://106.75.7.176:80/callback
 
 # spring的数据源
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:E:\database\h2
+    url: jdbc:h2:~\community
     username: root
     password: 123456
 

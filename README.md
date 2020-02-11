@@ -19,6 +19,7 @@ ctrl + alt + N -> 将变量合并到上下文
 [callbackUrl](http://localhost:8080/callback)
 
 ## h2
+url:jdbc:h2:E:\database\h2
 ```sql
 CREATE TABLE user
 (
@@ -36,5 +37,30 @@ mvn flyway:migrate
 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```
 
+## 遗留问题  
+1.页尾  
+2.通知
+
+## 部署
+###依赖
+- Git
+- JDK
+- Maven
+- MySQL
+###步骤
+1: yum update
+2: yum install git
+3: mkdir App
+4: cd App
+5: git clone https://github.com/flamingo-mycz/community.git
+6: yum install maven
+7: mvn clean compile package
+8: 
+
+
+
+ 
+
+ 
 
 
