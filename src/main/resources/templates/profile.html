@@ -71,7 +71,9 @@
             </div>
 
             <div th:if="${section == 'replies'}">
-                回复通知内容
+                <div th:each="notification : ${pagination.list}">
+                    <span th:text="${notification.notifier.name} + '回复了你的' "></span>
+                </div>
             </div>
         </div>
 

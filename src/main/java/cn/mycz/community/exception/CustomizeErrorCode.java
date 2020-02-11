@@ -12,7 +12,7 @@ public enum CustomizeErrorCode implements IErrorCode {
     SYSTEM_ERROR(204, "服务冒烟了。。。"),
     COMMENT_NOT_FOUND(205, "你找的评论不存在了"),
     CONTENT_IS_EMPTY(206, "回复内容不能为空"),
-    ;
+    FILE_UPLOAD_FAIL(207, "图片上传失败") ;
 
     private Integer code;
     private String message;

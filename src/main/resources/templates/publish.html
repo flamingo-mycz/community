@@ -93,9 +93,15 @@
 
         $(function() {
             var editor = editormd("question-editor", {
-                width  : "100%",
-                height : "350px",
-                path   : "/js/lib/"
+                width: "100%",
+                height: "350px",
+                path: "/js/lib/",
+                delay: 0,
+                watch: false,
+                placeholder: "请输入问题的描述",
+                imageUpload: true,
+                imageFormat: ["jpg", "jpeg", "gif", "png", "bmp"],
+                imageUploadURL: "/file/upload"
             });
         });
     </script>

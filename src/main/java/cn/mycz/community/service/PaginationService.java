@@ -79,8 +79,8 @@ public class PaginationService {
         List<NotificationDto> notificationDtos = new ArrayList<>();
         PaginationDto<NotificationDto> paginationDto = new PaginationDto<>();
         for (Notification notification : notifications) {
-            Integer receiver = notification.getReceiver();
-            User user = userService.findByAccountId(receiver);
+            Integer notifier = notification.getNotifier();
+            User user = userService.findByAccountId(notifier);
             NotificationDto notificationDto = new NotificationDto(notification, user);
             notificationDtos.add(notificationDto);
         }

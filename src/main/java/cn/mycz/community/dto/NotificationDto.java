@@ -20,8 +20,8 @@ public class NotificationDto {
     private String resourceTitle;
     private String statement;
 
-    public NotificationDto(Notification notification, User user) {
+    public NotificationDto(Notification notification, User notifier) {
         BeanUtils.copyProperties(notification, this);
-        this.setNotifier(user);
+        this.setNotifier(notifier);
     }
 }

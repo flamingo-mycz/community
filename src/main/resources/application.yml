@@ -29,3 +29,13 @@ mybatis:
 logging:
   level:
     cn.mycz.community.mapper: debug
+
+# ucloud文件上传服务
+ucloud:
+  ufile:
+    public-key: TOKEN_0046698e-bb19-4ee9-ab07-523c2c712adb
+    private-key: b9416bb6-dd89-4145-bf91-53688f7112a9
+    bucket-name: mycz
+    region: cn-bj
+    proxy-suffix: ufileos.com
+    expires-duration: 315360000
