@@ -55,7 +55,8 @@ mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 5: git clone https://github.com/flamingo-mycz/community.git
 6: yum install maven
 7: mvn clean compile package
-8: 
+8: mvn package
+9: java -jar -Dspring.profiles.active=product *.jar
 
 
 
