@@ -28,7 +28,10 @@ mybatis:
 # 打印mybatis执行的sql
 logging:
   level:
+    root: info
     cn.mycz.community.mapper: debug
+#  file:
+#    name: spring.log
 
 # ucloud文件上传服务
 ucloud:
@@ -39,3 +42,4 @@ ucloud:
     region: cn-bj
     proxy-suffix: ufileos.com
     expires-duration: 315360000
+
