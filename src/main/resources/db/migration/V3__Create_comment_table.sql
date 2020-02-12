@@ -4,7 +4,8 @@ CREATE TABLE comment
     parent_id int NOT NULL,
     type int NOT NULL,
     commentator int NOT NULL,
-    gmt_create bigint NOT NULL,
-    gmt_modified bigint NOT NULL,
+    content varchar(1024),
+    gmt_create bigint ,
+    gmt_modified bigint ,
     like_count int DEFAULT 0
 );

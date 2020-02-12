@@ -28,6 +28,7 @@ mybatis:
 # 打印mybatis执行的sql
 logging:
   level:
+    root: info
     cn.mycz.community.mapper: debug
 
 # ucloud文件上传服务
