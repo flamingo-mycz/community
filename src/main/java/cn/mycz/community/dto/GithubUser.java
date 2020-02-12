@@ -26,7 +26,7 @@ public class GithubUser {
         long currentTimeMillis = System.currentTimeMillis();
 
         User user = new User();
-        user.setName(this.getName());
+        user.setName(this.getName() == null ? this.getLogin() : this.getName());
         user.setToken(token);
         user.setAccountId(accountId);
         user.setGmtCreate(currentTimeMillis);

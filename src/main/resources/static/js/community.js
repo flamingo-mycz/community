@@ -45,6 +45,8 @@ function onCommentIconClick(e) {
                         "class": "media-left"
                     }).append($("<img/>", {
                         "class": "media-object img-rounded",
+                        "width": "48px",
+                        "height": "48px",
                         "src": comment.user.avatarUrl
                     }));
 
